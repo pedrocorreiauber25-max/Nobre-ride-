@@ -1,0 +1,17 @@
+NOBRE RAID | CEO EDITION — PWA
+
+Este pacote prepara a aplicação para ser instalável no Android e funcionar offline depois de aberta pelo menos uma vez.
+
+IMPORTANTE:
+- Para instalar como PWA, os ficheiros têm de estar alojados num endereço HTTPS. Abrir o index.html diretamente não ativa a instalação PWA nem o service worker.
+- A opção gratuita mais simples é publicar esta pasta num serviço de alojamento estático com HTTPS (por exemplo, GitHub Pages). Isso exige criar/configurar a conta e publicar os ficheiros.
+- Os registos atuais da versão HTML podem não aparecer automaticamente no endereço online, porque o armazenamento do navegador é separado por origem. Antes de mudar, exporte uma cópia JSON na aplicação antiga e restaure-a na nova, se a aplicação oferecer a opção de importar JSON.
+- Os dados ficam no navegador/dispositivo; este pacote não cria sincronização online nem backup automático na nuvem.
+
+INSTALAÇÃO NO ANDROID, DEPOIS DE PUBLICADA:
+1. Abrir o endereço HTTPS no Chrome.
+2. Abrir o menu ⋮ e escolher “Instalar app” ou “Adicionar ao ecrã inicial”.
+3. Confirmar a instalação.
+4. Abrir a app pelo novo ícone.
+
+Cópias de segurança: fazer exportação JSON regularmente e guardar fora do dispositivo.
