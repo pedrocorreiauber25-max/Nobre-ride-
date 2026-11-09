@@ -139,6 +139,7 @@ class ScreenRadarService : Service() {
                             getSharedPreferences("copilot_radar", MODE_PRIVATE)
                                 .edit()
                                 .putString("latest_ocr", detected)
+                                .putString("latest_offer", OfferDataParser.parse(detected).summary())
                                 .putLong("latest_ocr_at", now)
                                 .apply()
                         }
