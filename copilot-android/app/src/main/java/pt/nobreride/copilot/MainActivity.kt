@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.widget.Button
 import android.widget.LinearLayout
@@ -18,6 +20,13 @@ class MainActivity : Activity() {
 
     private lateinit var status: TextView
     private lateinit var latest: TextView
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private val refreshText = object : Runnable {
+        override fun run() {
+            refreshLatestText()
+            mainHandler.postDelayed(this, 1200)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,10 +122,24 @@ class MainActivity : Activity() {
         }
     }
 
+    private fun refreshLatestText() {
+        val prefs = getSharedPreferences("copilot_radar", MODE_PRIVATE)
+        val detected = prefs.getString("latest_ocr", "Ainda não foi detetado texto.")
+            ?: "Ainda não foi detetado texto."
+        latest.text = detected
+        val timestamp = prefs.getLong("latest_ocr_at", 0L)
+        if (timestamp > 0L && System.currentTimeMillis() - timestamp < 5000L) {
+            status.text = "RADAR ATIVO • texto detetado"
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        val prefs = getSharedPreferences("copilot_radar", MODE_PRIVATE)
-        latest.text = prefs.getString("latest_ocr", "Ainda não foi detetado texto.")
-            ?: "Ainda não foi detetado texto."
+        mainHandler.post(refreshText)
+    }
+
+    override fun onPause() {
+        mainHandler.removeCallbacks(refreshText)
+        super.onPause()
     }
 }
