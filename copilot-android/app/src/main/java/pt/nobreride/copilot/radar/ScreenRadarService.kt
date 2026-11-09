@@ -126,11 +126,13 @@ class ScreenRadarService : Service() {
                 val pixelStride = plane.pixelStride
                 val rowPadding = plane.rowStride - pixelStride * width
                 val paddedWidth = width + rowPadding / pixelStride
-                paddedBitmap = Bitmap.createBitmap(paddedWidth, height, Bitmap.Config.ARGB_8888)
-                paddedBitmap.copyPixelsFromBuffer(plane.buffer)
-                croppedBitmap = Bitmap.createBitmap(paddedBitmap, 0, 0, width, height)
+                val padded = Bitmap.createBitmap(paddedWidth, height, Bitmap.Config.ARGB_8888)
+                paddedBitmap = padded
+                padded.copyPixelsFromBuffer(plane.buffer)
+                val cropped = Bitmap.createBitmap(padded, 0, 0, width, height)
+                croppedBitmap = cropped
 
-                recognizer.process(InputImage.fromBitmap(croppedBitmap, 0))
+                recognizer.process(InputImage.fromBitmap(cropped, 0))
                     .addOnSuccessListener { result ->
                         val detected = result.text.trim()
                         if (detected.isNotEmpty()) {
@@ -178,7 +180,7 @@ class ScreenRadarService : Service() {
         imageReader?.close()
         projection?.stop()
         worker?.quitSafely()
-        if (::recognizer.isInitialized) recognizer.close()
+        recognizer.close()
         super.onDestroy()
     }
 }
