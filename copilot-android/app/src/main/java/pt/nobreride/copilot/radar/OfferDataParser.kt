@@ -31,8 +31,9 @@ object OfferDataParser {
 
     fun parse(text: String): ParsedOffer {
         val normalized = text.replace('\u00A0', ' ')
-        val price = priceRegex.find(normalized)?.groupValues?.get(1)?.toDoubleOrNull()
-            ?.let { it.toString().replace(',', '.').toDoubleOrNull() }
+        val priceMatch = priceRegex.find(normalized)
+        val priceText = priceMatch?.groupValues?.drop(1)?.firstOrNull { it.isNotBlank() }
+        val price = priceText?.replace(',', '.')?.toDoubleOrNull()
         val distance = distanceRegex.find(normalized)?.groupValues?.get(1)
             ?.replace(',', '.')?.toDoubleOrNull()
 
