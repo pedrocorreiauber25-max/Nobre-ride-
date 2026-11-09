@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Gravity
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.graphics.Color
@@ -38,9 +39,19 @@ class MainActivity : Activity() {
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
-            setPadding(28, 42, 28, 28)
+            setPadding(28, 24, 28, 28)
             setBackgroundColor(Color.rgb(10, 10, 12))
         }
+
+        val brandArtwork = ImageView(this).apply {
+            setImageResource(R.drawable.nobre_ride_brand)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            adjustViewBounds = true
+            contentDescription = "Símbolo dourado da marca Nobre Ride Copilot"
+        }
+        root.addView(brandArtwork, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 132
+        ))
 
         val brand = TextView(this).apply {
             text = "NOBRE RIDE"
@@ -53,7 +64,7 @@ class MainActivity : Activity() {
             textSize = 13f
             setTextColor(Color.LTGRAY)
             gravity = Gravity.CENTER
-            setPadding(0, 8, 0, 30)
+            setPadding(0, 8, 0, 24)
         }
         status = TextView(this).apply {
             text = "RADAR DESLIGADO"
