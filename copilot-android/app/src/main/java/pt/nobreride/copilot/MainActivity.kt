@@ -20,6 +20,7 @@ class MainActivity : Activity() {
 
     private lateinit var status: TextView
     private lateinit var latest: TextView
+    private lateinit var offerSummary: TextView
     private val mainHandler = Handler(Looper.getMainLooper())
     private val refreshText = object : Runnable {
         override fun run() {
@@ -78,6 +79,12 @@ class MainActivity : Activity() {
             setTextColor(Color.WHITE)
             setPadding(0, 28, 0, 0)
         }
+        offerSummary = TextView(this).apply {
+            text = "À espera de uma oferta com preço, distância e duração."
+            textSize = 15f
+            setTextColor(Color.rgb(214, 176, 92))
+            setPadding(0, 16, 0, 0)
+        }
         val note = TextView(this).apply {
             text = "A captura só começa após autorização explícita do Android. Nesta fase, o radar lê texto do ecrã; não aceita nem rejeita viagens."
             textSize = 12f
@@ -91,6 +98,7 @@ class MainActivity : Activity() {
         root.addView(start)
         root.addView(stop)
         root.addView(latest)
+        root.addView(offerSummary)
         root.addView(note)
         setContentView(root)
     }
@@ -127,6 +135,8 @@ class MainActivity : Activity() {
         val detected = prefs.getString("latest_ocr", "Ainda não foi detetado texto.")
             ?: "Ainda não foi detetado texto."
         latest.text = detected
+        offerSummary.text = prefs.getString("latest_offer", "À espera de uma oferta com preço, distância e duração.")
+            ?: "À espera de uma oferta com preço, distância e duração."
         val timestamp = prefs.getLong("latest_ocr_at", 0L)
         if (timestamp > 0L && System.currentTimeMillis() - timestamp < 5000L) {
             status.text = "RADAR ATIVO • texto detetado"
